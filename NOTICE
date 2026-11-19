@@ -1,0 +1,8 @@
+prk-todolist includes a TypeScript port derived from Hermes Agent.
+
+Upstream project: Hermes Agent
+Upstream repository: https://github.com/NousResearch/hermes-agent
+Upstream source path: tools/todo_tool.py
+Source commit: ea61bb9ef8
+The TypeScript core preserves the upstream TodoStore semantics under the MIT License.
+Copyright (c) 2025 Nous Research. This repository's adapter remains MIT-licensed.

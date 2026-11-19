@@ -1,0 +1,274 @@
+[
+  {
+    "name": "flat list, no phases",
+    "todos": [
+      { "id": "a", "content": "Write parser", "status": "in_progress" },
+      { "id": "b", "content": "Add tests", "status": "pending" },
+      { "id": "c", "content": "Wire widget", "status": "blocked", "reason": "Waiting for Gateway restart" },
+      { "id": "d", "content": "Read spec", "status": "completed" }
+    ],
+    "lines": [
+      "Todo 1/4",
+      "▸ Write parser",
+      "○ Add tests",
+      "! Wire widget",
+      "  Waiting for Gateway restart",
+      "✓ Read spec"
+    ]
+  },
+  {
+    "name": "single phase",
+    "todos": [
+      { "id": "p1", "kind": "phase", "content": "Research" },
+      { "id": "t1", "content": "Read code", "status": "in_progress", "parent": "p1" },
+      { "id": "t2", "content": "Draft notes", "status": "pending", "parent": "p1" }
+    ],
+    "lines": [
+      "Todo 0/2",
+      "I. Research  0/2",
+      "  ▸ Read code",
+      "  ○ Draft notes"
+    ]
+  },
+  {
+    "name": "multiple phases with a folded finished phase, subtasks and blocked reason",
+    "todos": [
+      { "id": "p1", "kind": "phase", "content": "调研" },
+      { "id": "t1", "content": "读代码", "status": "completed", "parent": "p1" },
+      { "id": "t2", "content": "写结论", "status": "completed", "parent": "p1" },
+      { "id": "p2", "kind": "phase", "content": "实现" },
+      { "id": "t3", "content": "写解析器", "status": "in_progress", "parent": "p2", "owner": "worker-a" },
+      { "id": "s1", "content": "状态行", "status": "completed", "parent": "t3" },
+      { "id": "s2", "content": "层级", "status": "pending", "parent": "t3" },
+      { "id": "t4", "content": "接入浮窗", "status": "blocked", "parent": "p2", "reason": "等 Gateway 重启" },
+      { "id": "t5", "content": "测试", "status": "pending", "parent": "p2" }
+    ],
+    "lines": [
+      "Todo 2/5",
+      "I. 调研  2/2",
+      "II. 实现  0/3",
+      "  ▸ 写解析器  · worker-a",
+      "    ✓ 状态行",
+      "    ○ 层级",
+      "  ! 接入浮窗",
+      "    等 Gateway 重启",
+      "  ○ 测试"
+    ]
+  },
+  {
+    "name": "unphased tasks come before every phase and are indented like phase tasks",
+    "todos": [
+      { "id": "p1", "kind": "phase", "content": "Build" },
+      { "id": "loose", "content": "Misc chore", "status": "pending" },
+      { "id": "t1", "content": "Compile", "status": "pending", "parent": "p1" }
+    ],
+    "lines": [
+      "Todo 0/2",
+      "  ○ Misc chore",
+      "I. Build  0/1",
+      "  ○ Compile"
+    ]
+  },
+  {
+    "name": "subtasks without phases",
+    "todos": [
+      { "id": "a", "content": "Refactor store", "status": "in_progress" },
+      { "id": "a1", "content": "Split validation", "status": "completed", "parent": "a" },
+      { "id": "a2", "content": "Move helpers", "status": "pending", "parent": "a" },
+      { "id": "b", "content": "Update docs", "status": "pending" }
+    ],
+    "lines": [
+      "Todo 0/2",
+      "▸ Refactor store",
+      "  ✓ Split validation",
+      "  ○ Move helpers",
+      "○ Update docs"
+    ]
+  },
+  {
+    "name": "several in_progress items with owners, author order kept",
+    "todos": [
+      { "id": "p1", "kind": "phase", "content": "Parallel work" },
+      { "id": "t1", "content": "Backend", "status": "in_progress", "parent": "p1", "owner": "worker-a" },
+      { "id": "t2", "content": "Frontend", "status": "in_progress", "parent": "p1", "owner": "worker-b" },
+      { "id": "t3", "content": "Integrate", "status": "pending", "parent": "p1", "owner": "main" },
+      { "id": "t4", "content": "Release notes", "status": "pending", "parent": "p1" }
+    ],
+    "lines": [
+      "Todo 0/4",
+      "I. Parallel work  0/4",
+      "  ▸ Backend  · worker-a",
+      "  ▸ Frontend  · worker-b",
+      "  ○ Integrate  · main",
+      "  ○ Release notes"
+    ]
+  },
+  {
+    "name": "blocked subtask under a phase: reason is indented two more than the item",
+    "todos": [
+      { "id": "p1", "kind": "phase", "content": "Ship" },
+      { "id": "t1", "content": "Deploy", "status": "in_progress", "parent": "p1" },
+      { "id": "s1", "content": "Approve change", "status": "blocked", "parent": "t1", "reason": "Needs sign-off", "owner": "ops" },
+      { "id": "s2", "content": "Smoke test", "status": "pending", "parent": "t1" }
+    ],
+    "lines": [
+      "Todo 0/1",
+      "I. Ship  0/1",
+      "  ▸ Deploy",
+      "    ! Approve change  · ops",
+      "      Needs sign-off",
+      "    ○ Smoke test"
+    ]
+  },
+  {
+    "name": "cancelled counts as closed",
+    "todos": [
+      { "id": "a", "content": "Try approach A", "status": "cancelled", "owner": "worker-a" },
+      { "id": "b", "content": "Try approach B", "status": "in_progress" }
+    ],
+    "lines": [
+      "Todo 1/2",
+      "✕ Try approach A  · worker-a",
+      "▸ Try approach B"
+    ]
+  },
+  {
+    "name": "completed fold without phases hides subtasks of folded tasks",
+    "todos": [
+      { "id": "a", "content": "One", "status": "completed" },
+      { "id": "a1", "content": "Hidden child", "status": "pending", "parent": "a" },
+      { "id": "b", "content": "Two", "status": "pending" },
+      { "id": "c", "content": "Three", "status": "completed" },
+      { "id": "d", "content": "Four", "status": "cancelled" },
+      { "id": "e", "content": "Five", "status": "completed" },
+      { "id": "f", "content": "Six", "status": "in_progress" }
+    ],
+    "lines": [
+      "Todo 4/6",
+      "✓ 3 completed",
+      "○ Two",
+      "✕ Four",
+      "▸ Six"
+    ]
+  },
+  {
+    "name": "completed fold is per phase; below the threshold completed tasks stay listed",
+    "todos": [
+      { "id": "p1", "kind": "phase", "content": "Build" },
+      { "id": "c1", "content": "One", "status": "completed", "parent": "p1" },
+      { "id": "c2", "content": "Two", "status": "completed", "parent": "p1" },
+      { "id": "c3", "content": "Three", "status": "completed", "parent": "p1" },
+      { "id": "c4", "content": "Four", "status": "pending", "parent": "p1" },
+      { "id": "p2", "kind": "phase", "content": "Verify" },
+      { "id": "v1", "content": "Lint", "status": "completed", "parent": "p2" },
+      { "id": "v2", "content": "Test", "status": "pending", "parent": "p2" }
+    ],
+    "lines": [
+      "Todo 4/6",
+      "I. Build  3/4",
+      "  ✓ 3 completed",
+      "  ○ Four",
+      "II. Verify  1/2",
+      "  ✓ Lint",
+      "  ○ Test"
+    ]
+  },
+  {
+    "name": "phase whose tasks are all completed or cancelled folds to its title line",
+    "todos": [
+      { "id": "p1", "kind": "phase", "content": "Done" },
+      { "id": "t1", "content": "Finished", "status": "completed", "parent": "p1" },
+      { "id": "t2", "content": "Dropped", "status": "cancelled", "parent": "p1" },
+      { "id": "s1", "content": "Open child of a closed task", "status": "pending", "parent": "t1" }
+    ],
+    "lines": [
+      "Todo 2/2",
+      "I. Done  2/2"
+    ]
+  },
+  {
+    "name": "phases without tasks and roman numerals",
+    "todos": [
+      { "id": "p1", "kind": "phase", "content": "A" },
+      { "id": "p2", "kind": "phase", "content": "B" },
+      { "id": "p3", "kind": "phase", "content": "C" },
+      { "id": "p4", "kind": "phase", "content": "D" },
+      { "id": "p5", "kind": "phase", "content": "E" },
+      { "id": "p6", "kind": "phase", "content": "F" },
+      { "id": "p7", "kind": "phase", "content": "G" },
+      { "id": "p8", "kind": "phase", "content": "H" },
+      { "id": "p9", "kind": "phase", "content": "I" },
+      { "id": "p10", "kind": "phase", "content": "J" },
+      { "id": "p11", "kind": "phase", "content": "K" },
+      { "id": "p12", "kind": "phase", "content": "L" },
+      { "id": "p13", "kind": "phase", "content": "M" },
+      { "id": "p14", "kind": "phase", "content": "N" }
+    ],
+    "lines": [
+      "Todo 0/0",
+      "I. A  0/0",
+      "II. B  0/0",
+      "III. C  0/0",
+      "IV. D  0/0",
+      "V. E  0/0",
+      "VI. F  0/0",
+      "VII. G  0/0",
+      "VIII. H  0/0",
+      "IX. I  0/0",
+      "X. J  0/0",
+      "XI. K  0/0",
+      "XII. L  0/0",
+      "XIII. M  0/0",
+      "XIV. N  0/0"
+    ]
+  },
+  {
+    "name": "symbols inside names, content, owner and reason; whitespace collapses to one line",
+    "todos": [
+      { "id": "p1", "kind": "phase", "content": "Phase · A — B ! ○" },
+      { "id": "t1", "content": "Fix a·b — c ! ○ d", "status": "pending", "parent": "p1" },
+      { "id": "t2", "content": "Keep a·b and ✓ 3 completed-ish", "status": "in_progress", "parent": "p1", "owner": "w-1" },
+      { "id": "t3", "content": "x · y", "status": "cancelled", "parent": "p1", "owner": "o-2" },
+      { "id": "t4", "content": "Two\nlines  and   gaps", "status": "blocked", "parent": "p1", "reason": "✓ 1/2 · foo — bar\nbaz" },
+      { "id": "s1", "content": "! not a blocked line", "status": "pending", "parent": "t4" }
+    ],
+    "lines": [
+      "Todo 1/4",
+      "I. Phase · A — B ! ○  1/4",
+      "  ○ Fix a·b — c ! ○ d",
+      "  ▸ Keep a·b and ✓ 3 completed-ish  · w-1",
+      "  ✕ x · y  · o-2",
+      "  ! Two lines and gaps",
+      "    ✓ 1/2 · foo — bar baz",
+      "    ○ ! not a blocked line"
+    ]
+  },
+  {
+    "name": "item without owner whose content contains ' · ' keeps it as content",
+    "todos": [
+      { "id": "a", "content": "Fix a · b", "status": "in_progress" },
+      { "id": "b", "content": "Ship · now", "status": "completed" },
+      { "id": "c", "content": "Plain", "status": "pending" }
+    ],
+    "lines": [
+      "Todo 1/3",
+      "▸ Fix a · b",
+      "✓ Ship · now",
+      "○ Plain"
+    ]
+  },
+  {
+    "name": "owner with inner spaces, a line break and repeated spaces is collapsed at render",
+    "todos": [
+      { "id": "p1", "kind": "phase", "content": "Review" },
+      { "id": "t1", "content": "Check diff", "status": "in_progress", "parent": "p1", "owner": "worker a" },
+      { "id": "t2", "content": "Sign off", "status": "pending", "parent": "p1", "owner": "lead\n   two  words" }
+    ],
+    "lines": [
+      "Todo 0/2",
+      "I. Review  0/2",
+      "  ▸ Check diff  · worker a",
+      "  ○ Sign off  · lead two words"
+    ]
+  }
+]
