@@ -59,19 +59,18 @@ export default function todoExtension(pi: ExtensionAPI): void {
   };
   pi.registerTool({
     name: "todo_list", label: "Todo",
-    description: "Track a task list for multi-step work (3+ steps). Use for complex tasks with 3+ steps or when the user provides multiple tasks. For 'all N items' tasks, enumerate every instance as its own item so none are silently dropped. Call with no parameters to read the current list.\n" +
-      "List order is priority. Several items may be in_progress only when the work truly runs in parallel: set owner to who does each one; otherwise one at a time. " +
-      "Structure has at most three levels: items with kind \"phase\" are phase titles (no status), tasks set parent to a phase id, subtasks set parent to a task id. " +
-      "blocked requires reason. Mark an item completed only after the work is verified done, never based on intent. If something fails, cancel it and add a revised item. Always returns the full current list.",
+    description: "Track todos for 3+ steps (enumerate all N items; Call with no parameters to read; returns full current list). " +
+      "List order is priority; max three levels: kind \"phase\" -> task -> subtask. " +
+      "One in_progress unless parallel with owner; blocked requires reason; complete only when verified, never based on intent; if failed, cancel it and add a revised item.",
     parameters: TObject({ todos: Optional(TArray(TObject({
       id: TString(),
-      content: Optional(TString({ description: "Task description, or the phase name when kind is \"phase\"." })),
-      kind: Optional(Literal("phase", { description: "\"phase\" makes a title-only grouping item (no status, parent, reason or owner). Omit for tasks and subtasks." })),
+      content: Optional(TString()),
+      kind: Optional(Literal("phase")),
       status: Optional(Status),
-      parent: Optional(TString({ description: "Task: id of its phase, or omit. Subtask: id of its task. Subtasks cannot have children; more than three levels is an error." })),
-      reason: Optional(TString({ description: "Why the item is blocked; required when status is blocked." })),
-      owner: Optional(TString({ description: "Who is doing this (e.g. a worker name). Tasks and subtasks only; set it when several items run in parallel." })),
-    }), { description: "Items to write." })), merge: Optional(TBoolean({ description: "Merge by id, updating only provided fields; otherwise replace the entire list." })) }),
+      parent: Optional(TString()),
+      reason: Optional(TString()),
+      owner: Optional(TString()),
+    }))), merge: Optional(TBoolean()) }),
     outputSchema: Output,
     executionMode: "sequential",
     renderCall(args, theme) {
